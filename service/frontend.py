@@ -119,7 +119,6 @@ def main():
         st.header('Ввести вручную')
         position = st.text_input('Должность', key='manual_position')
         age = st.number_input('Возраст', min_value=18, max_value=100, step=1, key='manual_age')
-        country = st.text_input('Страна', key='manual_country')
         city = st.text_input('Город', key='manual_city')
         key_skills = st.text_area('Ключевые навыки', key='manual_skills')
         work_experience = st.text_area('Опыт работы', key='work_experience')
