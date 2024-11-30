@@ -2,6 +2,8 @@ import streamlit as st
 import requests
 import uuid
 
+BASE_URL = 'http://localhost:8000'
+
 st.set_page_config(
     page_title='Резюме.тч',
     page_icon='📝'
@@ -78,7 +80,7 @@ def main():
         if uploaded_file is not None:
             files = {'file': uploaded_file}
             data = {'session_id': session_id}
-            response = requests.post('http://localhost:8000/upload-pdf/', files=files, data=data)
+            response = requests.post(f'{BASE_URL}/upload-pdf/', files=files, data=data)
             if response.status_code == 200:
                 st.success('Резюме успешно загружено и обработано')
                 st.session_state['data'] = response.json()['data']
@@ -92,7 +94,7 @@ def main():
         hh_link = st.text_input('Введите ссылку на резюме с HeadHunter', key="hh_link_input")
         if hh_link:
             data = {'link': hh_link, 'session_id': session_id}
-            response = requests.post('http://localhost:8000/process-hh-link/', data=data)
+            response = requests.post(f'{BASE_URL}/process-hh-link/', data=data)
             if response.status_code == 200:
                 st.success('Резюме успешно обработано')
                 st.session_state['data'] = response.json()['data']
@@ -107,7 +109,7 @@ def main():
         if uploaded_file is not None:
             files = {'file': uploaded_file}
             data = {'session_id': session_id}
-            response = requests.post('http://localhost:8000/upload-json/', files=files, data=data)
+            response = requests.post(f'{BASE_URL}/upload-json/', files=files, data=data)
             if response.status_code == 200:
                 st.success('JSON успешно загружен и обработан')
                 st.session_state['data'] = response.json()['data']
@@ -133,7 +135,7 @@ def main():
                 'key_skills': key_skills,
                 'work_experience': work_experience
             }
-            response = requests.post('http://localhost:8000/manual-input/', data={**data, 'session_id': session_id})
+            response = requests.post(f'{BASE_URL}/manual-input/', data={**data, 'session_id': session_id})
             if response.status_code == 200:
                 st.success('Данные успешно сохранены')
                 st.session_state['data'] = response.json()['data']
@@ -154,12 +156,12 @@ def main():
                 'expected_grade_salary': expected_grade_salary,
                 'session_id': session_id
             }
-            response = requests.post('http://localhost:8000/process-data/', data=data)
+            response = requests.post(f'{BASE_URL}/process-data/', data=data)
             if response.status_code == 200:
                 prediction = response.json()['prediction']
                 st.metric('Вероятность соответствия', f"{prediction:.2f}")
 
-                download_url = f'http://localhost:8000/download-results/?session_id={session_id}'
+                download_url = f'{BASE_URL}/download-results/?session_id={session_id}'
 
                 file_response = requests.get(download_url)
                 if file_response.status_code == 200:
