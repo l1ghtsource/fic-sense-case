@@ -40,7 +40,6 @@ async def upload_json(file: UploadFile = File(...), session_id: str = Form(...))
 async def manual_input(
     position: str = Form(...),
     age: int = Form(...),
-    country: str = Form(...),
     city: str = Form(...),
     key_skills: str = Form(...),
     work_experience: str = Form(...),
@@ -49,7 +48,6 @@ async def manual_input(
     data = {
         'position': position,
         'age': age,
-        'country': country,
         'city': city,
         'key_skills': key_skills,
         'work_experience': work_experience

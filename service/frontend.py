@@ -84,10 +84,9 @@ def main():
             if response.status_code == 200:
                 st.success('Резюме успешно загружено и обработано')
                 st.session_state['data'] = response.json()['data']
+                st.json(st.session_state['data'], expanded=False)
             else:
                 st.error('Ошибка при загрузке PDF')
-        elif st.session_state.get('data'):
-            st.json(st.session_state['data'])
 
     with tabs[1]:
         st.header('Вставить ссылку на HH')
@@ -98,10 +97,9 @@ def main():
             if response.status_code == 200:
                 st.success('Резюме успешно обработано')
                 st.session_state['data'] = response.json()['data']
+                st.json(st.session_state['data'], expanded=False)
             else:
                 st.error('Ошибка при обработке ссылки HH')
-        elif st.session_state.get('data'):
-            st.json(st.session_state['data'])
 
     with tabs[2]:
         st.header('Загрузить JSON')
@@ -113,10 +111,9 @@ def main():
             if response.status_code == 200:
                 st.success('JSON успешно загружен и обработан')
                 st.session_state['data'] = response.json()['data']
+                st.json(st.session_state['data'])
             else:
                 st.error('Ошибка при загрузке JSON')
-        elif st.session_state.get('data'):
-            st.json(st.session_state['data'])
 
     with tabs[3]:
         st.header('Ввести вручную')
@@ -130,7 +127,6 @@ def main():
             data = {
                 'position': position,
                 'age': age,
-                'country': country,
                 'city': city,
                 'key_skills': key_skills,
                 'work_experience': work_experience

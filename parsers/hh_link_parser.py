@@ -72,11 +72,9 @@ def parse_hh_link(link):
         parsed_data = {
             'position': resume.get('title', ''),
             'age': get_age_from_russian_date(resume.get('birth_date')),
-            'country': '',
             'city': resume.get('area', ''),
             'key_skills': ', '.join([skill['name'] for skill in resume.get('skill_set', [])]),
             'client_name': '',
-            'grade_proof': '',
             'salary': resume.get('salary', {}).get('amount', ''),
             'work_experience': parse_work_experience(resume.get('experience', []))
         }
@@ -84,11 +82,9 @@ def parse_hh_link(link):
         parsed_data = {
             'position': '',
             'age': '',
-            'country': '',
             'city': '',
             'key_skills': '',
             'client_name': '',
-            'grade_proof': '',
             'salary': '',
             'work_experience': ''
         }

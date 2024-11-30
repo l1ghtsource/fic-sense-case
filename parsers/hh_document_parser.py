@@ -77,11 +77,9 @@ def parse_hh_pdf(file_path):
     parsed_data = {
         'position': get_position(extracted_text),
         'age': get_age_from_russian_date(get_age(extracted_text)),
-        'country': '',
         'city': get_city(extracted_text),
         'key_skills': get_skills(extracted_text),
         'client_name': '',
-        'grade_proof': '',
         'salary': '',
         'work_experience': get_exp(extracted_text)
     }
