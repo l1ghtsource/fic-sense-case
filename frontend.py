@@ -5,6 +5,11 @@ from ml.bert_inference import get_bert_prediction
 from parsers.hh_document_parser import parse_hh_pdf
 from parsers.hh_link_parser import parse_hh_link
 
+st.set_page_config(
+    page_title='Резюме.тч',
+    page_icon='📝'
+)
+
 hide_decoration_bar_style = '''
     <style>
     header {visibility: hidden;}
@@ -76,7 +81,7 @@ def main():
     tabs = st.tabs(['Загрузить PDF', 'Вставить ссылку на HH', 'Загрузить JSON', 'Ввести вручную'])
 
     with tabs[0]:
-        st.header("Загрузить PDF")
+        st.header('Загрузить PDF')
         uploaded_file = st.file_uploader('Загрузите PDF резюме', type='pdf', key='pdf_uploader')
         if uploaded_file is not None:
             st.session_state.hh_link_data = None
