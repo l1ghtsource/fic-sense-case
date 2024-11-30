@@ -64,47 +64,90 @@ st.markdown('''
 def main():
     st.title('Резюме.тч')
 
-    input_method = st.radio(
-        'Выберите способ загрузки резюме',
-        ["Загрузить PDF", "Вставить ссылку на HH", "Загрузить JSON", "Ввести вручную"]
-    )
+    if 'pdf_data' not in st.session_state:
+        st.session_state.pdf_data = None
+    if 'hh_link_data' not in st.session_state:
+        st.session_state.hh_link_data = None
+    if 'json_data' not in st.session_state:
+        st.session_state.json_data = None
+    if 'manual_data' not in st.session_state:
+        st.session_state.manual_data = None
 
-    start_dict = {}
+    tabs = st.tabs(["Загрузить PDF", "Вставить ссылку на HH", "Загрузить JSON", "Ввести вручную"])
 
-    if input_method == "Загрузить PDF":
-        uploaded_file = st.file_uploader("Загрузите PDF резюме", type="pdf")
+    with tabs[0]:
+        st.header("Загрузить PDF")
+        uploaded_file = st.file_uploader("Загрузите PDF резюме", type="pdf", key="pdf_uploader")
         if uploaded_file is not None:
+            st.session_state.hh_link_data = None
+            st.session_state.json_data = None
+            st.session_state.manual_data = None
+
             with open("temp_resume.pdf", "wb") as f:
                 f.write(uploaded_file.getbuffer())
-            start_dict = parse_hh_pdf("temp_resume.pdf")
-    elif input_method == "Вставить ссылку на HH":
-        hh_link = st.text_input("Введите ссылку на резюме с HeadHunter")
+            st.session_state.pdf_data = parse_hh_pdf("temp_resume.pdf")
+            st.success("Резюме успешно загружено и обработано")
+        elif st.session_state.pdf_data:
+            st.json(st.session_state.pdf_data)
+
+    with tabs[1]:
+        st.header("Вставить ссылку на HH")
+        hh_link = st.text_input("Введите ссылку на резюме с HeadHunter", key="hh_link_input")
         if hh_link:
+            st.session_state.pdf_data = None
+            st.session_state.json_data = None
+            st.session_state.manual_data = None
+
             if 'hh.ru/resume/' in hh_link:
-                start_dict = parse_hh_link(hh_link)
+                st.session_state.hh_link_data = parse_hh_link(hh_link)
+                st.success("Резюме успешно обработано")
             else:
-                start_dict = None
+                st.session_state.hh_link_data = None
                 st.error("Ссылка должна быть на HH резюме!")
-    elif input_method == "Загрузить JSON":
-        uploaded_file = st.file_uploader("Загрузите JSON файл с данными", type="json")
+        elif st.session_state.hh_link_data:
+            st.json(st.session_state.hh_link_data)
+
+    with tabs[2]:
+        st.header("Загрузить JSON")
+        uploaded_file = st.file_uploader("Загрузите JSON файл с данными", type="json", key="json_uploader")
         if uploaded_file is not None:
-            start_dict = pd.read_json(uploaded_file).iloc[0].to_dict()
-    elif input_method == "Ввести вручную":
-        start_dict = {
-            "position": st.text_input("Должность"),
-            "age": st.number_input("Возраст", min_value=18, max_value=100, step=1),
-            "country": st.text_input("Страна"),
-            "city": st.text_input("Город"),
-            "key_skills": st.text_area("Ключевые навыки"),
-            "work_experience": st.number_input("Опыт работы (лет)", min_value=0, max_value=50, step=1)
+            st.session_state.pdf_data = None
+            st.session_state.hh_link_data = None
+            st.session_state.manual_data = None
+
+            st.session_state.json_data = pd.read_json(uploaded_file).iloc[0].to_dict()
+            st.success("JSON успешно загружен и обработан")
+        elif st.session_state.json_data:
+            st.json(st.session_state.json_data)
+
+    with tabs[3]:
+        st.header("Ввести вручную")
+        st.session_state.manual_data = {
+            "position": st.text_input("Должность", key="manual_position"),
+            "age": st.number_input("Возраст", min_value=18, max_value=100, step=1, key="manual_age"),
+            "country": st.text_input("Страна", key="manual_country"),
+            "city": st.text_input("Город", key="manual_city"),
+            "key_skills": st.text_area("Ключевые навыки", key="manual_skills"),
+            "work_experience": st.text_area()
         }
 
     client_name = st.text_input("Название компании")
     expected_grade_salary = st.text_input("Ожидаемый грейд и зарплата")
 
     if st.button("Обработать"):
-        if start_dict and client_name and expected_grade_salary:
-            final_dict = start_dict.copy()
+        if st.session_state.pdf_data:
+            final_dict = st.session_state.pdf_data.copy()
+        elif st.session_state.hh_link_data:
+            final_dict = st.session_state.hh_link_data.copy()
+        elif st.session_state.json_data:
+            final_dict = st.session_state.json_data.copy()
+        elif st.session_state.manual_data:
+            final_dict = st.session_state.manual_data.copy()
+        else:
+            st.error("Пожалуйста, загрузите данные или введите их вручную!")
+            return
+
+        if client_name and expected_grade_salary:
             final_dict.update({
                 "client_name": client_name,
                 "salary": expected_grade_salary,

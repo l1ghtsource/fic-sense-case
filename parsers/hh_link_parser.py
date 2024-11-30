@@ -65,19 +65,32 @@ def parse_work_experience(experience_list):
 # на вход ссылка в виде https://hh.ru/resume/43a999b3ff0d5e49570039ed1f6a526c304250, на выходе df с заполненными полями в формате train
 def parse_hh_link(link):
     hh_id = link.split('/')[-1]
-    resume = download.resume(hh_id)
-    resume = parse.resume(resume)
+    try:
+        resume = download.resume(hh_id)
+        resume = parse.resume(resume)
 
-    parsed_data = {
-        'position': resume.get('title', ''),
-        'age': get_age_from_russian_date(resume.get('birth_date')),
-        'country': '',
-        'city': resume.get('area', ''),
-        'key_skills': ', '.join([skill['name'] for skill in resume.get('skill_set', [])]),
-        'client_name': '',
-        'grade_proof': resume.get('education_level', ''),
-        'salary': resume.get('salary', {}).get('amount', ''),
-        'work_experience': parse_work_experience(resume.get('experience', []))
-    }
+        parsed_data = {
+            'position': resume.get('title', ''),
+            'age': get_age_from_russian_date(resume.get('birth_date')),
+            'country': '',
+            'city': resume.get('area', ''),
+            'key_skills': ', '.join([skill['name'] for skill in resume.get('skill_set', [])]),
+            'client_name': '',
+            'grade_proof': resume.get('education_level', ''),
+            'salary': resume.get('salary', {}).get('amount', ''),
+            'work_experience': parse_work_experience(resume.get('experience', []))
+        }
+    except:
+        parsed_data = {
+            'position': '',
+            'age': '',
+            'country': '',
+            'city': '',
+            'key_skills': '',
+            'client_name': '',
+            'grade_proof': '',
+            'salary': '',
+            'work_experience': ''
+        }
 
     return parsed_data
