@@ -128,7 +128,7 @@ def main():
             "country": st.text_input("Страна", key="manual_country"),
             "city": st.text_input("Город", key="manual_city"),
             "key_skills": st.text_area("Ключевые навыки", key="manual_skills"),
-            "work_experience": st.text_area()
+            "work_experience": st.text_area("Опыт работы", key="work_experience")
         }
 
     client_name = st.text_input("Название компании")
