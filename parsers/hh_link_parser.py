@@ -76,7 +76,7 @@ def parse_hh_link(link):
             'city': resume.get('area', ''),
             'key_skills': ', '.join([skill['name'] for skill in resume.get('skill_set', [])]),
             'client_name': '',
-            'grade_proof': resume.get('education_level', ''),
+            'grade_proof': '',
             'salary': resume.get('salary', {}).get('amount', ''),
             'work_experience': parse_work_experience(resume.get('experience', []))
         }
