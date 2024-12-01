@@ -19,6 +19,35 @@ Team Members:
 
 > Необходимо разработать систему оценки уровня эксперта по резюме. Для подсчёта финальной оценки можно учитывать любые факторы, информация о которых дана в резюме. Для реализации можно использовать как готовые модели с подключением по API, так и дообучать open-source модели или создавать свои.
 
+## Оглавление
+
+1. [Предложенное решение](#предложенное-решение)
+   - [Блок-схема всего решения](#блок-схема-всего-решения)
+
+2. [Очистка данных](#очистка-данных)
+
+3. [Обучение моделей](#обучение-моделей)
+   - [cointegrated/rubert-tiny2](#cointegratedrubert-tiny2)
+   - [Tochka-AI/ruRoPEBert-e5-base-2k](#tochka-airurop-bert-e5-base-2k)
+   - [unsloth/gemma-2-9b-it-bnb-4bit](#unslothgemma-2-9b-it-bnb-4bit)
+   - [Интересные замечания](#интересные-замечания)
+
+4. [Парсинг данных о компаниях](#парсинг-данных-о-компаниях)
+
+5. [Фронтенд](#фронтенд)
+
+6. [Эндпоинты](#эндпоинты)
+   - [POST /upload-pdf/](#post-upload-pdf)
+   - [POST /process-hh-link/](#post-process-hh-link)
+   - [POST /upload-json/](#post-upload-json)
+   - [POST /manual-input/](#post-manual-input)
+   - [POST /process-data-bert/](#post-process-data-bert)
+   - [POST /process-data-bert-json/](#post-process-data-bert-json)
+   - [GET /download-results/](#get-download-results)
+
+7. [Наши преимущества](#наши-преимущества)
+
+
 ## Предложенное решение
 
 ### Блок-схема всего решения:
