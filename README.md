@@ -21,21 +21,15 @@ Team Members:
 
 ## Оглавление
 
-1. [Предложенное решение](#предложенное-решение)
-   - [Блок-схема всего решения](#блок-схема-всего-решения)
-
+1. [Блок-схема решения](#блок-схема-решения)
 2. [Очистка данных](#очистка-данных)
-
 3. [Обучение моделей](#обучение-моделей)
    - [cointegrated/rubert-tiny2](#cointegratedrubert-tiny2)
    - [Tochka-AI/ruRoPEBert-e5-base-2k](#tochka-airurop-bert-e5-base-2k)
    - [unsloth/gemma-2-9b-it-bnb-4bit](#unslothgemma-2-9b-it-bnb-4bit)
    - [Интересные замечания](#интересные-замечания)
-
 4. [Парсинг данных о компаниях](#парсинг-данных-о-компаниях)
-
 5. [Фронтенд](#фронтенд)
-
 6. [Эндпоинты](#эндпоинты)
    - [POST /upload-pdf/](#post-upload-pdf)
    - [POST /process-hh-link/](#post-process-hh-link)
@@ -44,13 +38,10 @@ Team Members:
    - [POST /process-data-bert/](#post-process-data-bert)
    - [POST /process-data-bert-json/](#post-process-data-bert-json)
    - [GET /download-results/](#get-download-results)
-
 7. [Наши преимущества](#наши-преимущества)
 
 
-## Предложенное решение
-
-### Блок-схема всего решения:
+## Блок=схема решения:
 
 тут будет блок-схема
 
