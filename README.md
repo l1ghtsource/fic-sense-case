@@ -28,15 +28,7 @@ Team Members:
 5. [Парсинг данных о компаниях](#парсинг-данных-о-компаниях)
 6. [Фронтенд](#фронтенд)
 7. [Эндпоинты](#эндпоинты)
-   - [POST /upload-pdf/](#post-upload-pdf)
-   - [POST /process-hh-link/](#post-process-hh-link)
-   - [POST /upload-json/](#post-upload-json)
-   - [POST /manual-input/](#post-manual-input)
-   - [POST /process-data-bert/](#post-process-data-bert)
-   - [POST /process-data-bert-json/](#post-process-data-bert-json)
-   - [GET /download-results/](#get-download-results)
 8. [Наши преимущества](#наши-преимущества)
-
 
 ## Блок-схема решения:
 
