@@ -1,13 +1,59 @@
-from fastapi import FastAPI, File, UploadFile, Form
-from fastapi.responses import JSONResponse, StreamingResponse
 import pandas as pd
 import json
+import torch
+
+from transformers import Gemma2ForSequenceClassification, GemmaTokenizerFast
+from peft import PeftModel
+from dataclasses import dataclass
+
+from fastapi import FastAPI, File, UploadFile, Form
+from fastapi.responses import JSONResponse, StreamingResponse
+from fastapi.middleware.cors import CORSMiddleware
+
 from ml.bert_inference import get_bert_prediction
 from ml.gemma_inference import get_gemma_prediction
 from parsers.hh_document_parser import parse_hh_pdf
 from parsers.hh_link_parser import parse_hh_link
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=['*'],
+    allow_credentials=True,
+    allow_methods=['*'],
+    allow_headers=['*'],
+)
+
+
+@dataclass
+class Config:
+    gemma_dir = 'unsloth/gemma-2-9b-it-bnb-4bit'
+    lora_dir = ''
+    max_length = 2048
+    batch_size = 4
+    device = torch.device('cuda:0')
+
+
+cfg = Config()
+
+tokenizer, model = None, None
+
+
+def load_tokenizer_and_model(cfg):
+    global tokenizer, model
+    tokenizer = GemmaTokenizerFast.from_pretrained(cfg.gemma_dir)
+    tokenizer.add_eos_token = True
+    tokenizer.padding_side = 'right'
+
+    model = Gemma2ForSequenceClassification.from_pretrained(
+        cfg.gemma_dir,
+        device_map=cfg.device,
+        use_cache=False
+    )
+
+    model = PeftModel.from_pretrained(model, cfg.lora_dir)
+
 
 session_data = {}
 
@@ -94,13 +140,15 @@ async def process_data_bert(
         'salary': expected_grade_salary,
     })
     df = pd.DataFrame([data])
-    prediction = get_gemma_prediction(df)
+    class_0, class_1 = get_gemma_prediction(
+        df, model, tokenizer, batch_size=cfg.batch_size, device=cfg.device, max_length=cfg.max_length
+    )
     results_dict = {
-        'prediction': prediction,
+        'prediction': class_1,
         'resume_details': data
     }
     session_data[session_id] = results_dict
-    return JSONResponse(content={'status': 'success', 'prediction': prediction, 'data': results_dict})
+    return JSONResponse(content={'status': 'success', 'prediction': class_1, 'data': results_dict})
 
 
 @app.get('/download-results/')
