@@ -1,8 +1,16 @@
 import streamlit as st
 import requests
 import uuid
+import pandas as pd
+
+import sys
+import os
+sys.path.append(os.getcwd())
+
+from parsers.find_company_info import find_company_rating
 
 BASE_URL = 'http://localhost:8000'
+RATING_DF = pd.read_csv(r'parsers\data\rating_summary_2023.csv')
 
 st.set_page_config(
     page_title='Резюме.тч',
@@ -168,6 +176,19 @@ def main():
             expected_grade_salary = st.text_input('Ожидаемый грейд и зарплата')
 
             if st.button('Обработать'):
+                company_results = find_company_rating(client_name, RATING_DF)
+                if isinstance(company_results, list) and len(company_results) > 0:
+                    st.markdown("### Рейтинг компании")
+                    for result in company_results:
+                        st.markdown(f"- **Место**: {result['place']}")
+                        st.markdown(f"- **Категория**: {result['company_kind']}")
+                        st.markdown(f"- **Регион**: {result['region']}")
+                        st.markdown(f"- **Отрасль**: {result['field']}")
+                        st.markdown(f"- **Итоговый балл**: {result['score']}")
+                        st.markdown("---")
+                else:
+                    st.warning('Компания не найдена в рейтинге HH.ru 2023.')
+
                 if not st.session_state.get('data'):
                     st.error('Пожалуйста, загрузите данные!')
                 elif not client_name or not expected_grade_salary:
