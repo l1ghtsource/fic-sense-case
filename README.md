@@ -48,22 +48,23 @@ Team Members:
 ## Интересные замечания:
 
 1. **Custom Head**
- ```python
- self.score = torch.nn.Sequential(
-    torch.nn.Dropout(0.1),
-    torch.nn.Linear(config.hidden_size, config.hidden_size // 2),
-    torch.nn.Dropout(0.1),
-    torch.nn.GELU(),
-    torch.nn.Linear(config.hidden_size // 2, config.num_labels),
- )
- ```
- Это значительно улучшило обучение на ранних шагах и последующую сходимость.
-2. **Разные LR для головы и бэкбона**
- В случае Gemma:
- ```python
- backbone_LR = alpha / rank * head_LR
- ```
- В случае BERT:
- ```python
- head_LR = backbone_LR * 10
- ```
+   ```python
+   self.score = torch.nn.Sequential(
+       torch.nn.Dropout(0.1),
+       torch.nn.Linear(config.hidden_size, config.hidden_size // 2),
+       torch.nn.Dropout(0.1),
+       torch.nn.GELU(),
+       torch.nn.Linear(config.hidden_size // 2, config.num_labels),
+   )
+   ```
+   Это значительно улучшило обучение на ранних шагах и последующую сходимость.
+
+3. **Разные LR для головы и бэкбона**
+   - В случае Gemma:
+      ```python
+       backbone_LR = alpha / rank * head_LR
+      ```
+   - В случае BERT:
+       ```python
+       head_LR = backbone_LR * 10
+       ```
