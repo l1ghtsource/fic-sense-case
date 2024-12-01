@@ -134,11 +134,6 @@ async def process_data_bert(
     })
 
     df = pd.DataFrame([data])
-    df.to_csv('ahahhaha.csv', index=False)
-    if 'country' in df.columns.tolist():
-        df = df.drop(columns=['country'], axis=1)
-    if 'grade_proof' in df.columns.tolist():
-        df = df.drop(columns=['grade_proof'], axis=1)
 
     prediction = bert_model.predict_dataframe(df)
     results_dict = {

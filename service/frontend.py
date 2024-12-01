@@ -182,7 +182,7 @@ def main():
                         'session_id': session_id
                     }
 
-                    model_endpoint = 'process-data-bert' if st.session_state['model'] == 'BERT' else 'process-data-gemma'
+                    model_endpoint = 'process-data-bert' if st.session_state['model'] == 'BERT (0.53 Roc-Auc)' else 'process-data-gemma'
 
                     response = requests.post(f'{BASE_URL}/{model_endpoint}/', data=data)
                     if response.status_code == 200:
@@ -235,7 +235,8 @@ def main():
                         'session_id': session_id
                     }
 
-                    model_endpoint = 'process-data-bert-json' if st.session_state['model'] == 'BERT' else 'process-data-gemma-json'
+                    model_endpoint = 'process-data-bert-json' if st.session_state[
+                        'model'] == 'BERT (0.53 Roc-Auc)' else 'process-data-gemma-json'
 
                     response = requests.post(f'{BASE_URL}/{model_endpoint}/', data=data)
                     if response.status_code == 200:
