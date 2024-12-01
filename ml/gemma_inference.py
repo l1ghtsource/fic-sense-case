@@ -1,10 +1,40 @@
 import torch
 import pandas as pd
 
-from transformers import Gemma2ForSequenceClassification, Gemma2Model
+from transformers import Gemma2ForSequenceClassification, Gemma2Model, GemmaTokenizerFast
 from transformers.data.data_collator import pad_without_fast_tokenizer_warning
+from peft import PeftModel
+from dataclasses import dataclass
 
 USE_DEOTT_TOKENIZER = True  # https://www.kaggle.com/competitions/lmsys-chatbot-arena/discussion/527596
+
+
+@dataclass
+class GemmaConfig:
+    gemma_dir = 'unsloth/gemma-2-9b-it-bnb-4bit'
+    lora_dir = ''
+    max_length = 2048
+    batch_size = 4
+    device: torch.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+
+
+gemma_cfg = GemmaConfig()
+
+
+def load_tokenizer_and_model(cfg):
+    global gemma_tokenizer, gemma_model
+    gemma_tokenizer = GemmaTokenizerFast.from_pretrained(cfg.gemma_dir)
+    gemma_tokenizer.add_eos_token = True
+    gemma_tokenizer.padding_side = 'right'
+
+    gemma_model = Gemma2ForSequenceClassification.from_pretrained(
+        cfg.gemma_dir,
+        device_map=cfg.device,
+        use_cache=False
+    )
+
+    gemma_model = PeftModel.from_pretrained(gemma_model, cfg.lora_dir)
+    gemma_model.eval()
 
 
 class CustomGemma2ForSequenceClassification(Gemma2ForSequenceClassification):
