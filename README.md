@@ -254,7 +254,7 @@ Team Members:
 ├── parsers/                           # Скрипты для парсинга данных
 │  ├── chromedriver-win64/             # Chrome драйвер для Selenium
 │  ├── data/                           # Спаршенные данные
-│       └── rating_summary_2023.csv    # Рейтинг компаний с HH
+│  │   └── rating_summary_2023.csv    # Рейтинг компаний с HH
 │  ├── find_company_info.py            # Извлечение информации о компании
 │  ├── hh_document_parser.py           # Парсинг HH резюме в .pdf формате
 │  ├── hh_link_parser.py               # Парсинг HH резюме в url формате
@@ -263,6 +263,7 @@ Team Members:
 ├── service/                           # Сервис
 │  ├── backend.py                      # Логика бэкенда
 │  └── frontend.py                     # Логика фронтенда
+│
 ├── Dockerfile                         # Dockerfile для создания контейнера
 ├── README.md                          # Документация
 └── requirements.txt                   # Зависимости библиотек
