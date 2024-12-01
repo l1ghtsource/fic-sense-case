@@ -24,13 +24,10 @@ Team Members:
 1. [Блок-схема решения](#блок-схема-решения)
 2. [Очистка данных](#очистка-данных)
 3. [Обучение моделей](#обучение-моделей)
-   - [cointegrated/rubert-tiny2](#cointegrated-rubert-tiny2)
-   - [Tochka-AI/ruRoPEBert-e5-base-2k](#tochka-ai-ruropebert-e5-base-2k)
-   - [unsloth/gemma-2-9b-it-bnb-4bit](#unsloth-gemma-2-9b-it-bnb-4bit)
-   - [Интересные замечания](#интересные-замечания)
-4. [Парсинг данных о компаниях](#парсинг-данных-о-компаниях)
-5. [Фронтенд](#фронтенд)
-6. [Эндпоинты](#эндпоинты)
+4. [Интересные замечания](#интересные-замечания)
+5. [Парсинг данных о компаниях](#парсинг-данных-о-компаниях)
+6. [Фронтенд](#фронтенд)
+7. [Эндпоинты](#эндпоинты)
    - [POST /upload-pdf/](#post-upload-pdf)
    - [POST /process-hh-link/](#post-process-hh-link)
    - [POST /upload-json/](#post-upload-json)
@@ -38,7 +35,7 @@ Team Members:
    - [POST /process-data-bert/](#post-process-data-bert)
    - [POST /process-data-bert-json/](#post-process-data-bert-json)
    - [GET /download-results/](#get-download-results)
-7. [Наши преимущества](#наши-преимущества)
+8. [Наши преимущества](#наши-преимущества)
 
 
 ## Блок-схема решения:
