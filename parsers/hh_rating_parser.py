@@ -7,7 +7,7 @@ from selenium.webdriver.common.action_chains import ActionChains
 from bs4 import BeautifulSoup
 import pandas as pd
 
-URL = 'https://rating.hh.ru/history/rating2023/summary?tab=giant"'
+URL = 'https://rating.hh.ru/history/rating2023/summary?tab=giant'
 
 XPATHS = [
     '//*[@id="root"]/div/div/div/div[1]/div/div[7]/div[1]/div[1]',
