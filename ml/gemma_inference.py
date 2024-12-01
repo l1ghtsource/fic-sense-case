@@ -6,19 +6,21 @@ from transformers.data.data_collator import pad_without_fast_tokenizer_warning
 from peft import PeftModel
 from dataclasses import dataclass
 
-USE_DEOTT_TOKENIZER = True  # https://www.kaggle.com/competitions/lmsys-chatbot-arena/discussion/527596
-
+# ## Инструкция по инференсу:
+# gemma_cfg = GemmaConfig() # тут не забыть скачать веса адаптера с HF и указать путь к папке с ними
+# df = pd.read_json('test_data.json')
+# tokenizer, model = None, None
+# load_tokenizer_and_model(gemma_cfg)
+# _, class_1 = get_gemma_prediction(df,  model, tokenizer, gemma_cfg.batch_size, gemma_cfg.device, gemma_cfg.max_length, gemma_cfg.deott)
 
 @dataclass
 class GemmaConfig:
     gemma_dir = 'unsloth/gemma-2-9b-it-bnb-4bit'
-    lora_dir = ''
+    lora_dir = 'path_to_best_model' # путь к скачанной папке с https://huggingface.co/TheStrangerOne/FIC-SENCE-Gemma-LORA
     max_length = 2048
     batch_size = 4
     device: torch.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-
-
-gemma_cfg = GemmaConfig()
+    deott: bool = True # https://www.kaggle.com/competitions/lmsys-chatbot-arena/discussion/52759
 
 
 def load_tokenizer_and_model(cfg):
@@ -155,7 +157,7 @@ def tokenize_deott(tokenizer, df, max_length):
 
 
 @torch.no_grad()
-def get_gemma_prediction(df, model, tokenizer, batch_size, device, max_length):
+def get_gemma_prediction(df, model, tokenizer, batch_size, device, max_length, deott):
     df = df.fillna('нет информации')
     
     def remove_duplicate_blocks(text: str) -> str:
@@ -173,7 +175,7 @@ def get_gemma_prediction(df, model, tokenizer, batch_size, device, max_length):
     
     df.work_experience = df.work_experience.apply(remove_duplicate_blocks)
     
-    if not USE_DEOTT_TOKENIZER:
+    if not deott:
         data = pd.DataFrame()
         data['input_ids'], data['attention_mask'] = tokenize(tokenizer, df, max_length)
         data['length'] = data['input_ids'].apply(len)
