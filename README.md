@@ -27,17 +27,17 @@ Team Members:
 
 ## Обучение моделей:
 
-1. `*cointegrated/rubert-tiny2*`
+1. `cointegrated/rubert-tiny2`
  - дал крайне низкий roc-auc 0.51
  - 5 эпох обучения заняло 6 минут (2xT4)
  - нестабильный
  - max_lenght ограничена 512 токанами
-2. `*Tochka-AI/ruRoPEBert-e5-base-2k*`
+2. `Tochka-AI/ruRoPEBert-e5-base-2k`
  - дал по-прежнему невысокий roc-auc 0.53
  - 5 эпох обучения заняло 10 часов (2xT4)
  - нестабильный
  - max_lenght 2048 токенов
- 3. `*unsloth/gemma-2-9b-it-bnb-4bit*`
+ 3. `unsloth/gemma-2-9b-it-bnb-4bit`
  - прирост до `0.61 roc-auc`
  - 1 эпоха обучения заняла 8 часов (4xL4)
  - max_lenght 1024 токенов
@@ -47,13 +47,23 @@ Team Members:
 
 ## Интересные замечания:
 
-1. Custom Head:
- - ```python
-   self.score = torch.nn.Sequential(
-      torch.nn.Dropout(0.1),
-      torch.nn.Linear(config.hidden_size, config.hidden_size // 2),
-      torch.nn.Dropout(0.1),
-      torch.nn.GELU(),
-      torch.nn.Linear(config.hidden_size // 2, config.num_labels),
-  )
-   ```, улучшило обучение на ранних шагах
+1. Custom Head
+```python
+self.score = torch.nn.Sequential(
+   torch.nn.Dropout(0.1),
+   torch.nn.Linear(config.hidden_size, config.hidden_size // 2),
+   torch.nn.Dropout(0.1),
+   torch.nn.GELU(),
+   torch.nn.Linear(config.hidden_size // 2, config.num_labels),
+)
+```
+Это значительно улучшило обучение на ранних шагах и последующую сходимость.
+2. Разные LR для головы и бэкбона
+В случае Gemma:
+```python
+backbone_LR = alpha / rank * head_LR
+```
+В случае BERT:
+```python
+head_LR = backbone_LR * 10
+```
