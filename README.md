@@ -62,6 +62,8 @@ Team Members:
 
 Скачать веса: [gemma](https://huggingface.co/TheStrangerOne/FIC-SENCE-Gemma-LORA), [rubert](https://huggingface.co/lightsource/fic-rubert-tiny-2-chckpnt800), [ruropebert](https://huggingface.co/lightsource/fic-ruropebert-tochka-ai)
 
+Для инференса воспользуйтесь [данным скриптом](ml/generate_final_submission.py) - необходимо будет указать путь к папке со скачанными локально [весами адаптера](https://huggingface.co/TheStrangerOne/FIC-SENCE-Gemma-LORA), а также к новому тестовому датасету.
+
 ## Интересные замечания:
 
 1. **Custom Head**
@@ -256,7 +258,8 @@ docker run -d -p 8000:8000 -p 8501:8501 fic-sense-case
 │  ├── bert_train.py                   # Обучение BERT
 │  ├── gemma_inference.py              # Инференс для Gemma
 │  ├── gemma_train.py                  # Обучение модели Gemma
-│  └── gemma_train_unstratified.py     # Обучение Gemma без стратификации
+│  ├── gemma_train_unstratified.py     # Обучение Gemma без стратификации
+│  └── generate_final_submission.py    # Скрипт для генерации итогового сабмита для рассчета метрик
 │
 ├── notebooks/                         # Jupyter ноутбуки
 │  ├── gemma-lora-train.ipynb          # Ноутбук для обучения Gemma
