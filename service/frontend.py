@@ -151,7 +151,7 @@ def main():
                 'expected_grade_salary': expected_grade_salary,
                 'session_id': session_id
             }
-            response = requests.post(f'{BASE_URL}/process-data/', data=data)
+            response = requests.post(f'{BASE_URL}/process-data-bert/', data=data)
             if response.status_code == 200:
                 prediction = response.json()['prediction']
                 st.metric('Вероятность соответствия', f"{prediction:.2f}")

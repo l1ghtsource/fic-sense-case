@@ -3,6 +3,7 @@ from fastapi.responses import JSONResponse, StreamingResponse
 import pandas as pd
 import json
 from ml.bert_inference import get_bert_prediction
+from ml.gemma_inference import get_gemma_prediction
 from parsers.hh_document_parser import parse_hh_pdf
 from parsers.hh_link_parser import parse_hh_link
 
@@ -56,8 +57,8 @@ async def manual_input(
     return JSONResponse(content={'status': 'success', 'data': data})
 
 
-@app.post("/process-data/")
-async def process_data(
+@app.post('/process-data-bert/')
+async def process_data_bert(
     client_name: str = Form(...),
     expected_grade_salary: str = Form(...),
     session_id: str = Form(...)
@@ -71,6 +72,29 @@ async def process_data(
     })
     df = pd.DataFrame([data])
     prediction = get_bert_prediction(df)
+    results_dict = {
+        'prediction': prediction,
+        'resume_details': data
+    }
+    session_data[session_id] = results_dict
+    return JSONResponse(content={'status': 'success', 'prediction': prediction, 'data': results_dict})
+
+
+@app.post('/process-data-gemma/')
+async def process_data_bert(
+    client_name: str = Form(...),
+    expected_grade_salary: str = Form(...),
+    session_id: str = Form(...)
+):
+    data = session_data.get(session_id, {})
+    if not data:
+        return JSONResponse(content={'status': 'error', 'message': 'No data found for this session.'})
+    data.update({
+        'client_name': client_name,
+        'salary': expected_grade_salary,
+    })
+    df = pd.DataFrame([data])
+    prediction = get_gemma_prediction(df)
     results_dict = {
         'prediction': prediction,
         'resume_details': data
