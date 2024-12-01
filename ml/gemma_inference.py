@@ -126,6 +126,23 @@ def tokenize_deott(tokenizer, df, max_length):
 
 @torch.no_grad()
 def get_gemma_prediction(df, model, tokenizer, batch_size, device, max_length):
+    df = df.fillna('нет информации')
+    
+    def remove_duplicate_blocks(text: str) -> str:
+        lines = text.split('\n')
+
+        unique_blocks = set()
+        result_lines = []
+        
+        for line in lines:
+            if line not in unique_blocks:
+                unique_blocks.add(line)
+                result_lines.append(line)
+        
+        return '\n'.join(result_lines)
+    
+    df.work_experience = df.work_experience.apply(remove_duplicate_blocks)
+    
     if not USE_DEOTT_TOKENIZER:
         data = pd.DataFrame()
         data['input_ids'], data['attention_mask'] = tokenize(tokenizer, df, max_length)
