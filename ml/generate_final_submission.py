@@ -1,7 +1,7 @@
 import torch
 import pandas as pd
 from dataclasses import dataclass
-from gemma_inference import load_tokenizer_and_model, get_gemma_prediction
+from ml.gemma_inference import load_tokenizer_and_model, get_gemma_prediction
 
 # требуется 2хT4, можно запустить на Kaggle
 @dataclass
