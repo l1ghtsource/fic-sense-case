@@ -4,6 +4,7 @@ COPY . /app
 
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
+RUN pip install streamlit parse_hh_data
 
 EXPOSE 8000
 EXPOSE 8501

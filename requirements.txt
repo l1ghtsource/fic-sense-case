@@ -1,9 +1,6 @@
 fastapi==0.115.5
 pandas==1.5.3
-parse_hh_data==0.1.14
 PyPDF2==3.0.1
-Requests==2.32.3
-streamlit==1.40.0
 scikit-learn==1.2.2
 torch==2.4.0
 transformers==4.45.1
