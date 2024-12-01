@@ -35,17 +35,17 @@ Team Members:
  - дал крайне низкий roc-auc 0.51
  - 5 эпох обучения заняло 6 минут (2xT4)
  - нестабильный
- - max_lenght ограничена 512 токанами
+ - max_length ограничена 512 токанами
 2. **Tochka-AI/ruRoPEBert-e5-base-2k**
  - дал по-прежнему невысокий roc-auc 0.53
  - 5 эпох обучения заняло 10 часов (2xT4)
  - нестабильный
- - max_lenght 2048 токенов
+ - max_length 2048 токенов
  3. **unsloth/gemma-2-9b-it-bnb-4bit**
  - прирост до `0.61 roc-auc`
  - 1 эпоха обучения заняла 8 часов (4xL4)
- - max_lenght 1024 токенов
- - lora adapter для `q, k, v, o, up, down, proj`
+ - max_length 1024 токенов
+ - LoRA Adapter для `q, k, v, o, up, down, proj`
 
 Ввиду сильного дисбаланса классов все модели учились с `Focal Loss (gamma = 2)`, распределение классов в валидационной выборке `было сохранено таким же`, каким оно было изначально для получения честных метрик.
 
@@ -72,7 +72,7 @@ Team Members:
        ```python
        head_LR = backbone_LR * 10
        ```
-   Это также обеспечило более стабильное обучение, было подсмотренно у [Chriss Deotte](https://www.kaggle.com/competitions/lmsys-chatbot-arena/discussion/527596).
+   Это также обеспечило более стабильное обучение, было подсмотренно у [Chris Deotte](https://www.kaggle.com/competitions/lmsys-chatbot-arena/discussion/527596).
 
  3. **Truncation слева**
     ```python
@@ -94,4 +94,4 @@ Team Members:
     
     return tmp
     ```
-    Данный прием точно также был подсмотрен у [Chriss Deotte](https://www.kaggle.com/competitions/lmsys-chatbot-arena/discussion/527596) в соревновании LMSYS.
+    Данный прием точно также был подсмотрен у [Chris Deotte](https://www.kaggle.com/competitions/lmsys-chatbot-arena/discussion/527596) в соревновании LMSYS.
