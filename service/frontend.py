@@ -116,7 +116,6 @@ def main():
             tabs = st.tabs(['Загрузить PDF', 'Вставить ссылку на HH', 'Ввести вручную'])
 
             with tabs[0]:
-                session_id = st.session_state['session_id'] = str(uuid.uuid4())
                 st.header('Загрузить PDF')
                 uploaded_file = st.file_uploader('Загрузите PDF резюме', type='pdf', key='pdf_uploader')
                 if uploaded_file is not None:
@@ -131,9 +130,8 @@ def main():
                         st.error('Ошибка при загрузке PDF')
 
             with tabs[1]:
-                session_id = st.session_state['session_id'] = str(uuid.uuid4())
                 st.header('Вставить ссылку на HH')
-                hh_link = st.text_input('Введите ссылку на резюме с HeadHunter', key="hh_link_input")
+                hh_link = st.text_input('Введите ссылку на резюме с HeadHunter', key='hh_link_input')
                 if hh_link:
                     data = {'link': hh_link, 'session_id': session_id}
                     response = requests.post(f'{BASE_URL}/process-hh-link/', data=data)
@@ -145,7 +143,6 @@ def main():
                         st.error('Ошибка при обработке ссылки HH')
 
             with tabs[2]:
-                session_id = st.session_state['session_id'] = str(uuid.uuid4())
                 st.header('Ввести вручную')
                 position = st.text_input('Должность', key='manual_position')
                 age = st.number_input('Возраст', min_value=18, max_value=100, step=1, key='manual_age')
@@ -189,7 +186,7 @@ def main():
                         prediction = response.json()['prediction']
                         if len(prediction) == 1:
                             prediction = prediction[0]
-                        st.metric('Вероятность соответствия', f"{prediction:.2f}")
+                        st.metric('Вероятность соответствия', f"{prediction:.5f}")
 
                         download_url = f'{BASE_URL}/download-results/?session_id={session_id}'
 
@@ -207,7 +204,6 @@ def main():
                         st.error('Ошибка при обработке данных')
 
         elif st.session_state['mode'] == 'Генерация сабмита из JSON':
-            session_id = st.session_state['session_id'] = str(uuid.uuid4())
             st.header('Загрузить JSON для генерации сабмита')
             uploaded_file = st.file_uploader('Загрузите JSON файл с данными', type='json', key='json_uploader')
             if uploaded_file is not None:
@@ -243,7 +239,10 @@ def main():
                         prediction = response.json()['prediction']
                         if len(prediction) == 1:
                             prediction = prediction[0]
-                            st.metric('Вероятность соответствия', f'{prediction:.2f}')
+                            st.metric('Вероятность соответствия', f'{prediction:.5f}')
+                        else:
+                            with st.expander('Вероятности соответствия:'):
+                                st.table(prediction)
 
                         download_url = f'{BASE_URL}/download-results/?session_id={session_id}'
 
