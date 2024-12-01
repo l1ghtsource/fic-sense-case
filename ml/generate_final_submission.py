@@ -7,7 +7,7 @@ from ml.gemma_inference import load_tokenizer_and_model, get_gemma_prediction
 @dataclass
 class GemmaConfig:
     gemma_dir = 'unsloth/gemma-2-9b-it-bnb-4bit'
-    lora_dir = 'TheStrangerOne/FIC-SENCE-Gemma-LORA' # путь к скачанной папке с https://huggingface.co/TheStrangerOne/FIC-SENCE-Gemma-LORA !!!
+    lora_dir = 'path' # путь к скачанной папке с https://huggingface.co/TheStrangerOne/FIC-SENCE-Gemma-LORA !!!
     max_length = 2048
     batch_size = 4
     device: torch.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
