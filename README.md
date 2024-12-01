@@ -29,6 +29,7 @@ Team Members:
 6. [Фронтенд](#фронтенд)
 7. [Эндпоинты](#эндпоинты)
 8. [Наши преимущества](#наши-преимущества)
+9. [Структура репозитория](#структура-репозитория)
 
 ## Блок-схема решения:
 
@@ -229,3 +230,40 @@ Team Members:
 - предоставляем готовое встраиваемое решение: API интегрируемо, а Streamlit сервис позволяет удобно взаимодействовать с ним
 - работа с внешними данными о компаниях
 - полная документация
+
+## Структура репозитория
+
+```
+.
+├── .streamlit/                        # Конфигурационные файлы Streamlit
+│   └── config.toml                    # Настройки сервера и стилей
+│
+├── ml/                                # ML скрипты
+│  ├── bert_inference.py               # Инференс для BERT модели
+│  ├── bert_train.py                   # Обучение BERT
+│  ├── gemma_inference.py              # Инференс для Gemma
+│  ├── gemma_train.py                  # Обучение модели Gemma
+│  └── gemma_train_unstratified.py     # Обучение Gemma без стратификации
+│
+├── notebooks/                         # Jupyter ноутбуки
+│  ├── gemma-lora-train.ipynb          # Ноутбук для обучения Gemma
+│  ├── hh_ratings_parse.ipynb          # Ноутбук для парсинга рейтингов HH
+│  ├── ruropebert_train.ipynb          # Ноутбук для обучения модели RuRoPEBERT
+│  └── unstratified_gemma_train.ipynb  # Ноутбук для обучения Gemma без стратификации
+│   
+├── parsers/                           # Скрипты для парсинга данных
+│  ├── chromedriver-win64/             # Chrome драйвер для Selenium
+│  ├── data/                           # Спаршенные данные
+│       └── rating_summary_2023.csv    # Рейтинг компаний с HH
+│  ├── find_company_info.py            # Извлечение информации о компании
+│  ├── hh_document_parser.py           # Парсинг HH резюме в .pdf формате
+│  ├── hh_link_parser.py               # Парсинг HH резюме в url формате
+│  └── hh_ratings_parser.py            # Парсинг рейтингов HH
+│
+├── service/                           # Сервис
+│  ├── backend.py                      # Логика бэкенда
+│  └── frontend.py                     # Логика фронтенда
+├── Dockerfile                         # Dockerfile для создания контейнера
+├── README.md                          # Документация
+└── requirements.txt                   # Зависимости библиотек
+```
