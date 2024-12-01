@@ -25,6 +25,10 @@ Team Members:
 
 тут будет блок-схема
 
+## Очистка данных:
+
+В последнем столбце `work_experience` было обнаружено большое количество дублирующихся блоков текста в каждой строке, в итоге везде был оставлен только первый блок. Более никакого препроцессинга не производилось и все силы были приложены к обучению различных моделей.
+
 ## Обучение моделей:
 
 1. **cointegrated/rubert-tiny2**
@@ -59,12 +63,35 @@ Team Members:
    ```
    Это значительно улучшило обучение на ранних шагах и последующую сходимость.
 
-3. **Разные LR для головы и бэкбона**
+2. **Разные LR для головы и бэкбона**
    - В случае Gemma:
       ```python
-       backbone_LR = alpha / rank * head_LR
+      backbone_LR = alpha / rank * head_LR
       ```
    - В случае BERT:
        ```python
        head_LR = backbone_LR * 10
        ```
+   Это также обеспечило более стабильное обучение, было подсмотренно у [Chriss Deotte](https://www.kaggle.com/competitions/lmsys-chatbot-arena/discussion/527596).
+
+ 3. **Truncation слева**
+    ```python
+    def prepare_text(self, age, city, work_experience, position, key_skills, client_name, salary):
+    rounds = [
+        f'<start_of_turn>age\n{age}\n\ncity\n{city}\n\n'
+        + f'work_experience\n{work_experience[:-700]}\n\n'
+        + f'position\n{position[:100]}\n\n'
+        + f'key_skills\n{key_skills[:200]}\n\n'
+        + f'client_name\n{client_name}\n\n'
+        + f'salary\n{salary[:200]}<end_of_turn>'
+    ]
+    
+    tmp = '\n'.join(rounds)
+    for k in range(len(rounds)):
+        tmp = '\n'.join(rounds[k:])
+        if len(self.tokenizer(tmp)['input_ids'] ) < self.max_length: 
+            break
+    
+    return tmp
+    ```
+    Данный прием точно также был подсмотрен у [Chriss Deotte](https://www.kaggle.com/competitions/lmsys-chatbot-arena/discussion/527596) в соревновании LMSYS.
