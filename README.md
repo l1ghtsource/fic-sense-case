@@ -9,7 +9,7 @@ Team Members:
 3. **Рыжичкин Кирилл** - ML, Backend, Frontend
 4. **Татьяна Янчук** - Design
 
-Презентация: [тык]()
+Презентация: [тык](https://drive.google.com/file/d/1rR_HkbhxQSNZW0stf5gLDu7tbQ2CH9E6/view?usp=sharing)
 
 Демонстрация веб-сервиса: [тык](https://drive.google.com/file/d/1rjdbdda2kV9LLqoA42z9-2Js45z8ZWsJ/view?usp=sharing)
 
