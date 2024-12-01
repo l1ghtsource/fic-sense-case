@@ -59,6 +59,8 @@ Team Members:
 
 Ввиду сильного дисбаланса классов все модели учились с `Focal Loss (gamma = 2)`, распределение классов в валидационной выборке `было сохранено таким же`, каким оно было изначально для получения честных метрик.
 
+Скачать веса: [gemma](https://huggingface.co/TheStrangerOne/FIC-SENCE-Gemma-LORA), [rubert](https://huggingface.co/lightsource/fic-rubert-tiny-2-chckpnt800), [ruropebert](https://huggingface.co/lightsource/fic-ruropebert-tochka-ai)
+
 ## Интересные замечания:
 
 1. **Custom Head**
